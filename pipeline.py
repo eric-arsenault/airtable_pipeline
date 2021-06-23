@@ -73,12 +73,13 @@ def load():
     
 default_args = {
     "owner": "airflow-dev",
-    "start_date": datetime.today() - timedelta(days=1)
+    "start_date": datetime(2021, 1, 1)
               }
 with DAG(
     "airtable_s3_snowflake_DAG",
     default_args=default_args,
-    schedule_interval = "0 1 * * *",
+    schedule_interval = "*/5 * * * *",
+    catchup=False,
     ) as dag:
     stage = PythonOperator(
         task_id="stage",
@@ -90,5 +91,4 @@ with DAG(
     )
 
 stage >> load     
-    
     
